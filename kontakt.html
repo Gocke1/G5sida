@@ -22,7 +22,7 @@
                 <a class="nav__link" href="index.html">Hem</a>
                 <a class="nav__link" href="tjanster.html">Tjänster</a>
                 <a class="nav__link" href="om-oss.html">Om oss</a>
-                <a class="nav__link nav__link--active" href="kontakt.html">Kontakt</a>
+                <a class="nav__link nav__link--active" href="kontakt.html" aria-current="page">Kontakt</a>
             </nav>
             <a class="nav__cta" href="tel:+46700286215">0700&nbsp;286&nbsp;215</a>
         </div>
@@ -55,10 +55,16 @@
                         <p>559541-6008</p>
                     </div>
                 </article>
-                <form class="contact-form" id="kontaktform" aria-label="Kontaktformulär" action="https://formsubmit.co/info@g5bygg.com" method="post" autocomplete="on">
+
+                <!-- FORM: statiskt (GitHub Pages) + FormSubmit AJAX -->
+                <form class="contact-form" id="kontaktform" aria-label="Kontaktformulär" action="https://formsubmit.co/info@g5bygg.com" method="post" autocomplete="on" novalidate>
                     <h2>Skicka en förfrågan</h2>
+
+                    <!-- FormSubmit options (fallback om AJAX ej kör) -->
                     <input type="hidden" name="_subject" value="Ny förfrågan via hemsidan">
                     <input type="hidden" name="_template" value="table">
+                    <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+
                     <div class="form__row form__row--split">
                         <div>
                             <label for="first-name">Namn</label>
@@ -71,7 +77,7 @@
                     </div>
                     <div class="form__row">
                         <label for="phone">Telefon</label>
-                        <input id="phone" name="phone" type="tel" placeholder="0700 000 000" autocomplete="tel" inputmode="tel">
+                        <input id="phone" name="phone" type="tel" placeholder="0700 000 000" autocomplete="tel" inputmode="tel" pattern="[0-9 +()-]{6,}">
                     </div>
                     <div class="form__row">
                         <label for="email">E-post</label>
@@ -81,8 +87,10 @@
                         <label for="message">Meddelande</label>
                         <textarea id="message" name="message" rows="5" placeholder="Berätta kort om projektet och önskad tidplan" autocomplete="on" required></textarea>
                     </div>
-                    <div class="form__status" id="kontaktform-status" role="status" aria-live="polite"></div>
+
                     <p class="form__note">Genom att skicka formuläret samtycker du till att vi kontaktar dig via angivna uppgifter.</p>
+
+                    <p class="form__status" id="form-status" role="status" aria-live="polite" hidden></p>
                     <button class="button" type="submit">Skicka meddelande</button>
                 </form>
             </div>
@@ -144,18 +152,20 @@
     </footer>
 
     <script>
+        // År i sidfot
         const yearElement = document.getElementById('year');
         if (yearElement) {
             yearElement.textContent = new Date().getFullYear();
         }
 
+        // Kontaktformulär – AJAX till FormSubmit (statiskt, funkar på GitHub Pages)
         const contactForm = document.getElementById('kontaktform');
-        const statusElement = document.getElementById('kontaktform-status');
+        const statusElement = document.getElementById('form-status');
 
-        const submitToFormSubmit = async (formData) => {
+        async function submitToFormSubmit(formData) {
             const payload = {
                 _subject: formData.get('_subject') || 'Ny förfrågan via hemsidan',
-                namn: `${formData.get('first_name')} ${formData.get('last_name')}`.trim(),
+                namn: `${(formData.get('first_name') || '').trim()} ${(formData.get('last_name') || '').trim()}`.trim(),
                 telefon: formData.get('phone') || 'Ej angivet',
                 epost: formData.get('email'),
                 meddelande: formData.get('message'),
@@ -164,43 +174,48 @@
 
             return fetch('https://formsubmit.co/ajax/info@g5bygg.com', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(payload)
             });
-        };
+        }
 
         if (contactForm) {
             contactForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
-                if (!statusElement) return contactForm.submit();
 
-                statusElement.textContent = 'Skickar ditt meddelande ...';
-                statusElement.classList.remove('form__status--error', 'form__status--success');
                 const submitButton = contactForm.querySelector('button[type="submit"]');
                 if (submitButton) {
                     submitButton.disabled = true;
+                    submitButton.textContent = 'Skickar...';
+                }
+
+                if (statusElement) {
+                    statusElement.hidden = false;
+                    statusElement.textContent = 'Skickar ditt meddelande...';
+                    statusElement.className = 'form__status form__status--info';
                 }
 
                 try {
                     const formData = new FormData(contactForm);
                     const response = await submitToFormSubmit(formData);
 
-                    if (!response.ok) {
-                        throw new Error('Nätverksfel');
-                    }
+                    if (!response.ok) throw new Error('Nätverksfel');
 
-                    statusElement.textContent = 'Tack! Ditt meddelande har skickats. Vi återkommer inom kort.';
-                    statusElement.classList.add('form__status--success');
+                    if (statusElement) {
+                        statusElement.textContent = 'Tack! Ditt meddelande har skickats. Vi återkommer inom kort.';
+                        statusElement.className = 'form__status form__status--success';
+                    }
                     contactForm.reset();
-                } catch (error) {
-                    statusElement.textContent = 'Kunde inte skicka meddelandet just nu. Försök igen eller mejla oss på info@g5bygg.com.';
-                    statusElement.classList.add('form__status--error');
+                } catch (err) {
+                    if (statusElement) {
+                        statusElement.textContent = 'Kunde inte skicka just nu. Försök igen eller mejla oss på info@g5bygg.com.';
+                        statusElement.className = 'form__status form__status--error';
+                    }
                 } finally {
+                    const submitButton = contactForm.querySelector('button[type="submit"]');
                     if (submitButton) {
                         submitButton.disabled = false;
+                        submitButton.textContent = 'Skicka meddelande';
                     }
                 }
             });
