@@ -58,7 +58,7 @@
                         <p>Vi arbetar vardagar 07.00–17.00 och erbjuder jour via byggservice vid behov.</p>
                     </div>
                 </article>
-                <form class="contact-form" id="kontaktform" aria-label="Kontaktformulär" action="mailto:info@g5bygg.se" method="post" enctype="text/plain">
+                <form class="contact-form" id="kontaktform" aria-label="Kontaktformulär" action="/api/contact" method="post" enctype="application/x-www-form-urlencoded">
                     <h2>Skicka en förfrågan</h2>
                     <div class="form__row form__row--split">
                         <div>
@@ -83,6 +83,7 @@
                         <textarea id="message" name="message" rows="5" placeholder="Berätta kort om projektet och önskad tidplan" required></textarea>
                     </div>
                     <p class="form__note">Genom att skicka formuläret samtycker du till att vi kontaktar dig via angivna uppgifter.</p>
+                    <p class="form__status" id="form-status" role="status" aria-live="polite" hidden></p>
                     <button class="button" type="submit">Skicka meddelande</button>
                 </form>
             </div>
@@ -147,6 +148,64 @@
         const yearElement = document.getElementById('year');
         if (yearElement) {
             yearElement.textContent = new Date().getFullYear();
+        }
+
+        const contactForm = document.getElementById('kontaktform');
+        const statusElement = document.getElementById('form-status');
+
+        if (contactForm && statusElement) {
+            contactForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Skickar...';
+                }
+
+                statusElement.hidden = false;
+                statusElement.textContent = 'Skickar ditt meddelande...';
+                statusElement.className = 'form__status form__status--info';
+
+                const formData = new FormData(contactForm);
+                const payload = Object.fromEntries(formData.entries());
+
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        let errorMessage = 'Något gick fel. Försök igen senare.';
+                        try {
+                            const errorData = await response.json();
+                            if (errorData && errorData.error) {
+                                errorMessage = errorData.error;
+                            }
+                        } catch (parseError) {
+                            // ignore parsing errors and use default message
+                        }
+                        throw new Error(errorMessage);
+                    }
+
+                    const data = await response.json();
+                    statusElement.textContent = data.message || 'Tack! Vi hör av oss så snart vi kan.';
+                    statusElement.className = 'form__status form__status--success';
+                    contactForm.reset();
+                } catch (error) {
+                    statusElement.textContent = error.message || 'Något gick fel. Försök igen senare.';
+                    statusElement.className = 'form__status form__status--error';
+                } finally {
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Skicka meddelande';
+                    }
+                }
+            });
         }
     </script>
 </body>
