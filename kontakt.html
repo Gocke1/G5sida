@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt | G5 Bygg AB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page page--contact">
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a href="index.html" class="brand">G5 Bygg AB</a>
+            <nav class="nav" aria-label="Huvudmeny">
+                <a class="nav__link" href="index.html">Hem</a>
+                <a class="nav__link" href="tjanster.html">Tjänster</a>
+                <a class="nav__link" href="om-oss.html">Om oss</a>
+                <a class="nav__link nav__link--active" href="kontakt.html">Kontakt</a>
+            </nav>
+            <a class="nav__cta" href="tel:+46700286215">0700&nbsp;286&nbsp;215</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero hero--subpage">
+            <div class="hero__overlay hero__overlay--contact"></div>
+            <div class="hero__content">
+                <span class="hero__tag">Kontakt</span>
+                <h1>Vi ser fram emot att prata bygg med dig</h1>
+                <p>Fyll i formuläret eller kontakta oss direkt via telefon eller e-post så återkommer vi snabbt.</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container contact-section__grid">
+                <article class="contact-card">
+                    <h2>Direktkontakt</h2>
+                    <div class="contact-card__item">
+                        <span class="contact-card__label">Telefon</span>
+                        <a href="tel:+46700286215">0700&nbsp;286&nbsp;215</a>
+                    </div>
+                    <div class="contact-card__item">
+                        <span class="contact-card__label">E-post</span>
+                        <a href="mailto:info@g5bygg.com">info@g5bygg.com</a>
+                    </div>
+                    <div class="contact-card__item">
+                        <span class="contact-card__label">Organisationsnummer</span>
+                        <p>559541-6008</p>
+                    </div>
+                    <div class="contact-card__item">
+                        <span class="contact-card__label">Tillgänglighet</span>
+                        <p>Vi arbetar vardagar 07.00–17.00 och erbjuder jour via byggservice vid behov.</p>
+                    </div>
+                </article>
+                <form class="contact-form" aria-label="Kontaktformulär">
+                    <h2>Skicka en förfrågan</h2>
+                    <div class="form__row">
+                        <label for="name">Namn</label>
+                        <input id="name" name="name" type="text" placeholder="Ditt namn" required>
+                    </div>
+                    <div class="form__row">
+                        <label for="company">Företag</label>
+                        <input id="company" name="company" type="text" placeholder="Organisation eller förening">
+                    </div>
+                    <div class="form__row">
+                        <label for="email">E-post</label>
+                        <input id="email" name="email" type="email" placeholder="namn@foretag.se" required>
+                    </div>
+                    <div class="form__row">
+                        <label for="phone">Telefon</label>
+                        <input id="phone" name="phone" type="tel" placeholder="0700 000 000">
+                    </div>
+                    <div class="form__row">
+                        <label for="message">Beskriv projektet</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Berätta kort om projektet och önskad tidplan"></textarea>
+                    </div>
+                    <p class="form__note">Genom att skicka formuläret samtycker du till att vi kontaktar dig via angivna uppgifter.</p>
+                    <button class="button" type="submit">Skicka förfrågan</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="service-areas">
+            <div class="container service-areas__grid">
+                <article>
+                    <h2>Projektområden</h2>
+                    <p>Vi verkar främst i Stockholmsregionen men åtar oss även projekt i angränsande län efter överenskommelse.</p>
+                </article>
+                <article>
+                    <h2>Typ av uppdrag</h2>
+                    <ul>
+                        <li>Totalentreprenad och utförandeentreprenad</li>
+                        <li>Renoveringar och hyresgästanpassningar</li>
+                        <li>Serviceavtal och jouruppdrag</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta-band">
+            <div class="container cta-band__inner">
+                <div>
+                    <h2>Redo att ta nästa steg?</h2>
+                    <p>Ring oss direkt eller boka in ett digitalt möte så går vi igenom ert projekt.</p>
+                </div>
+                <div class="cta-band__actions">
+                    <a class="button" href="tel:+46700286215">Ring 0700&nbsp;286&nbsp;215</a>
+                    <a class="button button--ghost" href="mailto:info@g5bygg.com">Skicka e-post</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer__content">
+            <div>
+                <h2>G5 Bygg AB</h2>
+                <p>Entreprenader med ansvar, kvalitet och tydlighet.</p>
+            </div>
+            <div class="footer__grid">
+                <div>
+                    <span class="footer__label">Telefon</span>
+                    <a href="tel:+46700286215">0700&nbsp;286&nbsp;215</a>
+                </div>
+                <div>
+                    <span class="footer__label">E-post</span>
+                    <a href="mailto:info@g5bygg.com">info@g5bygg.com</a>
+                </div>
+                <div>
+                    <span class="footer__label">Organisationsnummer</span>
+                    <p>559541-6008</p>
+                </div>
+            </div>
+        </div>
+        <p class="footer__note">&copy; <span id="year"></span> G5 Bygg AB. Alla rättigheter förbehållna.</p>
+    </footer>
+
+    <script>
+        const yearElement = document.getElementById('year');
+        if (yearElement) {
+            yearElement.textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>
