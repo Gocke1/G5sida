@@ -393,6 +393,25 @@ main { padding: 0 1.5rem 6rem; }
   color: var(--muted);
 }
 
+.form__status {
+  font-size: 0.95rem;
+  border-radius: 14px;
+  padding: 0.85rem 1.1rem;
+  background: rgba(15, 23, 42, 0.04);
+  color: var(--muted);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.form__status--success {
+  background: rgba(45, 164, 78, 0.12);
+  color: #1b7a3d;
+}
+
+.form__status--error {
+  background: rgba(185, 28, 28, 0.12);
+  color: #9f1239;
+}
+
 .service-areas {
   margin: 6rem auto 0;
   max-width: var(--max-width);
