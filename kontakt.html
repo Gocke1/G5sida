@@ -169,11 +169,18 @@
         const contactForm = document.getElementById('kontaktform');
         const statusElement = document.getElementById('form-status');
 
+        const FORM_SUBMIT_WEB_BASE = 'https://formsubmit.co/';
+        const FORM_SUBMIT_AJAX_BASE = 'https://formsubmit.co/ajax/';
+        const formSubmitAjaxEndpoint =
+            contactForm && contactForm.action.startsWith(FORM_SUBMIT_WEB_BASE)
+                ? `${FORM_SUBMIT_AJAX_BASE}${contactForm.action.slice(FORM_SUBMIT_WEB_BASE.length)}`
+                : `${FORM_SUBMIT_AJAX_BASE}62d03eedec7087f3209040e843a52c0e`;
+
         async function submitToFormSubmit(formData) {
             // FormSubmit kräver att fältnamnen skickas exakt som i formuläret.
             // Genom att posta själva FormData-objektet säkerställer vi att alla
             // standardfält (_subject, _template osv.) och användarens svar följer med.
-            return fetch('https://formsubmit.co/ajax/62d03eedec7087f3209040e843a52c0e', {
+            return fetch(formSubmitAjaxEndpoint, {
                 method: 'POST',
                 headers: { Accept: 'application/json' },
                 body: formData
