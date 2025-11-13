@@ -158,81 +158,13 @@
         <p class="footer__note">&copy; <span id="year"></span> G5 Bygg AB. Alla rättigheter förbehållna.</p>
     </footer>
 
-    <script>
-        // År i sidfot
-        const yearElement = document.getElementById('year');
-        if (yearElement) {
-            yearElement.textContent = new Date().getFullYear();
-        }
+   <script>
+    // År i sidfot
+    const yearElement = document.getElementById('year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+</script>
 
-        // Kontaktformulär – AJAX till FormSubmit (statiskt, funkar på GitHub Pages)
-        const contactForm = document.getElementById('kontaktform');
-        const statusElement = document.getElementById('form-status');
-
-        const FORM_SUBMIT_WEB_BASE = 'https://formsubmit.co/';
-        const FORM_SUBMIT_AJAX_BASE = 'https://formsubmit.co/ajax/';
-        const formSubmitAjaxEndpoint =
-            contactForm && contactForm.action.startsWith(FORM_SUBMIT_WEB_BASE)
-                ? `${FORM_SUBMIT_AJAX_BASE}${contactForm.action.slice(FORM_SUBMIT_WEB_BASE.length)}`
-                : `${FORM_SUBMIT_AJAX_BASE}62d03eedec7087f3209040e843a52c0e`;
-
-        async function submitToFormSubmit(formData) {
-            // FormSubmit kräver att fältnamnen skickas exakt som i formuläret.
-            // Genom att posta själva FormData-objektet säkerställer vi att alla
-            // standardfält (_subject, _template osv.) och användarens svar följer med.
-            return fetch(formSubmitAjaxEndpoint, {
-                method: 'POST',
-                headers: { Accept: 'application/json' },
-                body: formData
-            });
-        }
-
-        if (contactForm) {
-            contactForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const submitButton = contactForm.querySelector('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Skickar...';
-                }
-
-                if (statusElement) {
-                    statusElement.hidden = false;
-                    statusElement.textContent = 'Skickar ditt meddelande...';
-                    statusElement.className = 'form__status form__status--info';
-                }
-
-                try {
-                    const formData = new FormData(contactForm);
-                    // Om spam-fältet (_honey) är ifyllt avbryter vi utskicket.
-                    if (formData.get('_honey')) {
-                        throw new Error('Spamdetektering');
-                    }
-
-                    const response = await submitToFormSubmit(formData);
-
-                    if (!response.ok) throw new Error('Nätverksfel');
-
-                    if (statusElement) {
-                        statusElement.textContent = 'Tack! Ditt meddelande har skickats. Vi återkommer inom kort.';
-                        statusElement.className = 'form__status form__status--success';
-                    }
-                    contactForm.reset();
-                } catch (err) {
-                    if (statusElement) {
-                        statusElement.textContent = 'Kunde inte skicka just nu. Försök igen eller mejla oss på info@g5bygg.com.';
-                        statusElement.className = 'form__status form__status--error';
-                    }
-                } finally {
-                    const submitButton = contactForm.querySelector('button[type="submit"]');
-                    if (submitButton) {
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Skicka meddelande';
-                    }
-                }
-            });
-        }
-    </script>
 </body>
 </html>
