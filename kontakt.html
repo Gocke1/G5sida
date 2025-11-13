@@ -10,6 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Tvinga HTTPS i produktionsmiljö för att undvika osäkra formulärvarningar
+        if (window.location.protocol === 'http:' && !['localhost', '127.0.0.1'].includes(window.location.hostname)) {
+            const newUrl = `https://${window.location.host}${window.location.pathname}${window.location.search}${window.location.hash}`;
+            window.location.replace(newUrl);
+        }
+    </script>
 </head>
 <body class="page page--contact">
     <header class="site-header">
