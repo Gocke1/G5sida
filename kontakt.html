@@ -163,19 +163,13 @@
         const statusElement = document.getElementById('form-status');
 
         async function submitToFormSubmit(formData) {
-            const payload = {
-                _subject: formData.get('_subject') || 'Ny förfrågan via hemsidan',
-                namn: `${(formData.get('first_name') || '').trim()} ${(formData.get('last_name') || '').trim()}`.trim(),
-                telefon: formData.get('phone') || 'Ej angivet',
-                epost: formData.get('email'),
-                meddelande: formData.get('message'),
-                _template: formData.get('_template') || 'table'
-            };
-
+            // FormSubmit kräver att fältnamnen skickas exakt som i formuläret.
+            // Genom att posta själva FormData-objektet säkerställer vi att alla
+            // standardfält (_subject, _template osv.) och användarens svar följer med.
             return fetch('https://formsubmit.co/ajax/info@g5bygg.com', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify(payload)
+                headers: { Accept: 'application/json' },
+                body: formData
             });
         }
 
@@ -197,6 +191,11 @@
 
                 try {
                     const formData = new FormData(contactForm);
+                    // Om spam-fältet (_honey) är ifyllt avbryter vi utskicket.
+                    if (formData.get('_honey')) {
+                        throw new Error('Spamdetektering');
+                    }
+
                     const response = await submitToFormSubmit(formData);
 
                     if (!response.ok) throw new Error('Nätverksfel');
