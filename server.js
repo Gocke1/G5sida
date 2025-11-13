@@ -52,7 +52,7 @@ function escapeHtml(input = '') {
 function buildMessageBody({ first_name, last_name, phone, email, message }) {
   const fullName = [first_name, last_name].filter(Boolean).join(' ');
 
-  const text = `Nytt meddelande från kontaktformuläret på g5bygg.se\n\n` +
+  const text = `Nytt meddelande från kontaktformuläret på g5bygg.com\n\n` +
     `Namn: ${fullName}\n` +
     (phone ? `Telefon: ${phone}\n` : '') +
     `E-post: ${email}\n\n` +
