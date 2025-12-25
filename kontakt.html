@@ -101,12 +101,13 @@
                 </article>
 
                 <!-- FORM: statiskt (GitHub Pages) + FormSubmit AJAX -->
-                <form class="contact-form" id="kontaktform" aria-label="Kontaktformulär" action="https://formsubmit.co/62d03eedec7087f3209040e843a52c0e" method="post" autocomplete="on" accept-charset="UTF-8" novalidate>
+                <form class="contact-form" id="kontaktform" aria-label="Kontaktformulär" action="https://formsubmit.co/info@g5bygg.com" method="POST" autocomplete="on" accept-charset="UTF-8" novalidate>
                     <h2>Skicka en förfrågan</h2>
                     <input type="hidden" name="_next" value="https://g5bygg.com/tack.html">
                     <input type="hidden" name="_subject" value="Ny förfrågan via G5 Byggs hemsida!">
                     <input type="hidden" name="_captcha" value="false">
                     <input type="hidden" name="_template" value="table">
+                    <input type="hidden" id="reply-to" name="_replyto" value="">
                     <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
 
                     <div class="form__row form__row--split">
@@ -200,6 +201,17 @@
     const yearElement = document.getElementById('year');
     if (yearElement) {
         yearElement.textContent = new Date().getFullYear();
+    }
+
+    // Synka Reply-To med angiven e-post
+    const contactForm = document.getElementById('kontaktform');
+    const emailField = document.getElementById('email');
+    const replyToField = document.getElementById('reply-to');
+
+    if (contactForm && emailField && replyToField) {
+        contactForm.addEventListener('submit', () => {
+            replyToField.value = emailField.value.trim();
+        });
     }
 </script>
 
