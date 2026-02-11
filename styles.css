@@ -206,13 +206,13 @@ main { padding: 0 1.5rem 6rem; }
 
 .form__row label { display: block; font-weight: 600; color: var(--text); }
 
-.form__row input, .form__row textarea {
+.form__row input, .form__row textarea, .form__row select {
   width: 100%; border-radius: 16px; border: 1px solid var(--accent); padding: .85rem 1rem;
   font-size: 1rem; background: #fdfdfd; transition: border-color .2s ease, box-shadow .2s ease;
 }
 .form__row textarea { resize: vertical; min-height: 140px; }
 
-.form__row input:focus, .form__row textarea:focus {
+.form__row input:focus, .form__row textarea:focus, .form__row select:focus {
   outline: none; border-color: rgba(122,31,43,.6); box-shadow: 0 0 0 4px rgba(122,31,43,.12);
 }
 
